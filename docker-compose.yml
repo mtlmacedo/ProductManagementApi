@@ -14,7 +14,7 @@ services:
   product-management-api:
     build:
       context: .
-      dockerfile: ProductManagementApi/Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - "5000:80"
     depends_on:
