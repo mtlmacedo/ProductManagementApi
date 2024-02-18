@@ -2,28 +2,30 @@ version: '3.4'
 
 services:
   sql-server:
-    image: mcr.microsoft.com/mssql/server
+    image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
       SA_PASSWORD: "admin"
       ACCEPT_EULA: "Y"
     ports:
-      - "1433:1433"
+      - "8002:1433"
     networks:
-      - product-management-network
+      - product-network
 
   product-management-api:
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "5000:80"
+      - "8001:80"
     depends_on:
       - sql-server
     networks:
-      - product-management-network
+      - product-network
     environment:
-      ConnectionStrings__DefaultConnection: "Server=sql-server;Database=ProductDb;User=admin;Password=admin" # Change the database name
+      ConnectionStrings__DefaultConnection: "Server=sql-server;Database=ProductDb;User=admin;Password=admin"
 
 networks:
-  product-management-network:
-    driver: bridges
+  product-network:
+    driver: bridge
+   
+
