@@ -2,21 +2,16 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-ENV ASPNETCORE_URLS=http://+:80
-
-USER app
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG configuration=Release
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["ProductManagementApi.csproj", "./"]
-RUN dotnet restore "ProductManagementApi.csproj"
+COPY ["ProductManagementApi.csproj", "."]
+RUN dotnet restore "./ProductManagementApi.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "ProductManagementApi.csproj" -c $configuration -o /app/build
+RUN dotnet build "ProductManagementApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-ARG configuration=Release
-RUN dotnet publish "ProductManagementApi.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ProductManagementApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

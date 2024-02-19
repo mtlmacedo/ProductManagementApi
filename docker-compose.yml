@@ -12,6 +12,8 @@ services:
       - product-network
 
   product-management-api:
+    image: mcr.microsoft.com/dotnet/aspnet:8.0-latest
+    container_name: product-api
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -22,7 +24,7 @@ services:
     networks:
       - product-network
     environment:
-      ConnectionStrings__DefaultConnection: "Server=sql-server;Database=ProductDb;User=admin;Password=admin"
+      ConnectionStrings__DefaultConnection: "Server=sql-server;Database=ProductDb2;User=SA;Password=admin"
 
 networks:
   product-network:
